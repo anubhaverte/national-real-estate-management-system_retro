@@ -1,0 +1,504 @@
+body {
+    background-color: #FFFDF5;
+    color: #000000;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Times New Roman", Times, serif;
+    color: #800000;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+a { color: #0000EE; text-decoration: underline; }
+a:visited { color: #551A8B; }
+a:hover { color: #FF0000; }
+
+/* ===== HEADER ===== */
+.banner {
+    background-color: #003366;
+    color: #FFFFFF;
+    padding: 10px 15px;
+    border-bottom: 3px solid #800000;
+}
+.banner h1 { color: #FFFFFF; margin: 0; font-size: 20px; }
+.banner .tagline { font-size: 10px; font-style: italic; color: #CCCCCC; }
+
+.header-btn {
+    background-color: #FFFFFF;
+    border: 2px outset #CCCCCC;
+    color: #003366;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 4px 12px;
+    cursor: pointer;
+}
+.header-btn:hover { background-color: #FFFFCC; border-style: inset; }
+
+/* ===== NAV ===== */
+.menu-bar {
+    background-color: #CCCCCC;
+    border-bottom: 2px solid #999999;
+    padding: 5px 15px;
+    font-weight: bold;
+    overflow: hidden;
+}
+.menu-bar a {
+    color: #003366;
+    text-decoration: none;
+    margin-right: 15px;
+    padding: 2px 5px;
+    border: 1px solid transparent;
+}
+.menu-bar a:hover {
+    text-decoration: underline;
+    background-color: #DDDDDD;
+    border: 1px outset #FFFFFF;
+}
+
+.marquee-container {
+    background-color: #FFFFCC;
+    border: 1px solid #CCCC99;
+    padding: 2px;
+    color: #FF0000;
+    font-weight: bold;
+}
+
+/* ===== HERO WRAPPER — skyline always in background ===== */
+.hero-wrapper {
+    position: relative;
+    min-height: 550px;
+    overflow: hidden;
+    background-color: #FFFDF5;
+}
+
+.hero-skyline {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
+.skyline-img {
+    width: 100%;
+    display: block;
+    opacity: 0.18;
+    object-fit: cover;
+    object-position: bottom center;
+    height: 100%;
+    filter: contrast(1.1);
+}
+
+/* Scrollable foreground layer */
+.hero-scroll {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    min-height: 510px;
+}
+
+/* ===== HOME PANEL (login/register card — centered) ===== */
+.panel-home-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 430px;
+}
+
+.hero-card {
+    background-color: rgba(255, 253, 245, 0.96);
+    border: 2px solid #003366;
+    border-top: 5px solid #800000;
+    box-shadow: 4px 4px 0px #999999;
+    padding: 25px 30px;
+    width: 390px;
+    max-width: 95vw;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+}
+.hero-card-title {
+    font-family: "Times New Roman", serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+.hero-card-sub {
+    font-size: 10px;
+    font-style: italic;
+    color: #666666;
+    margin-bottom: 8px;
+}
+.hero-notice {
+    margin-top: 16px;
+    background-color: #FFFFCC;
+    border: 1px solid #CCCC99;
+    color: #800000;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 5px 8px;
+    text-align: center;
+}
+
+/* CTA buttons */
+.cta-btn {
+    background-color: #003366;
+    color: #FFFFFF;
+    border: 2px outset #336699;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 6px 18px;
+    cursor: pointer;
+}
+.cta-btn:hover { background-color: #004080; }
+.cta-btn:active { border-style: inset; }
+
+/* ===== DASHBOARD PANEL ===== */
+.panel-dashboard {
+    background-color: rgba(255, 255, 255, 0.94);
+    border: 2px solid #003366;
+    border-top: 4px solid #800000;
+    box-shadow: 3px 3px 0px #999;
+    padding: 15px 20px;
+    margin: 0 auto;
+    width: 95%;
+    max-width: 1200px;
+}
+
+.dash-view h2 {
+    margin-top: 5px;
+}
+
+/* ===== USER INFO BAR ===== */
+.user-info-bar {
+    background-color: rgba(238, 243, 250, 0.95);
+    border: 1px solid #003366;
+    border-left: 5px solid #800000;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+.uib-role-badge {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 2px 7px;
+    border: 1px solid #999;
+    background-color: #DDDDDD;
+    color: #000;
+    letter-spacing: 1px;
+}
+.uib-role-buyer   { background-color: #CCFFCC; border-color: #006600; color: #006600; }
+.uib-role-seller  { background-color: #CCE0FF; border-color: #003366; color: #003366; }
+.uib-role-admin   { background-color: #FFE0CC; border-color: #800000; color: #800000; }
+
+/* ===== Tables ===== */
+table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #000000;
+}
+table.data-table th {
+    background-color: #003366;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 6px;
+    border: 1px solid #000000;
+    text-align: left;
+    font-size: 11px;
+}
+table.data-table td {
+    padding: 6px;
+    border: 1px solid #000000;
+    vertical-align: middle;
+}
+table.data-table tr:nth-child(even) { background-color: #F8F9FA; }
+
+/* ===== Forms ===== */
+fieldset {
+    border: 1px solid #003366;
+    padding: 12px;
+    margin-bottom: 15px;
+    background-color: rgba(249, 249, 249, 0.95);
+}
+legend {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #003366;
+    background-color: #FFFDF5;
+    border: 1px solid #003366;
+    padding: 2px 6px;
+}
+.form-group { margin-bottom: 10px; }
+.form-group label { display: inline-block; width: 150px; font-weight: bold; }
+
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
+    border: 2px inset #CCCCCC;
+    background-color: #FFFFFF;
+    padding: 3px 5px;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+}
+
+/* ===== Buttons ===== */
+button, input[type="submit"], input[type="button"] {
+    background-color: #E0E0E0;
+    border: 2px outset #FFFFFF;
+    border-bottom-color: #666666;
+    border-right-color: #666666;
+    color: #000000;
+    padding: 3px 10px;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+}
+button:active, input[type="submit"]:active { border-style: inset; }
+
+/* ===== MODALS ===== */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.65);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 20px 0;
+}
+.modal-overlay.hidden { display: none !important; }
+
+.modal {
+    background-color: #FFFDF5;
+    border: 3px outset #CCCCCC;
+    border-top: 4px solid #003366;
+    width: 450px;
+    max-width: 95vw;
+    box-shadow: 5px 5px 0px #333333;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+    margin: auto;
+}
+.modal-medium { width: 620px; }
+.modal-large { width: 850px; max-height: 90vh; overflow-y: auto; }
+
+.modal-header {
+    background-color: #003366;
+    color: #FFFFFF;
+    font-family: "Times New Roman", serif;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 7px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+.modal-close {
+    background: none;
+    border: 1px outset #CCCCCC;
+    color: #FFFFFF;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 6px;
+    line-height: 1;
+}
+.modal-close:hover { background-color: #CC0000; }
+.modal-body { padding: 16px; }
+
+.modal-demo-accounts {
+    background-color: #FFFFCC;
+    border: 1px solid #CCCC99;
+    padding: 6px 8px;
+    margin: 10px 0;
+    font-size: 11px;
+    line-height: 1.7;
+}
+.modal-footer-btns {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #CCCCCC;
+}
+
+/* ===== BADGES & TAGS ===== */
+.badge-verified {
+    background-color: #006600;
+    color: #FFFFFF;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 1px 4px;
+    border-radius: 2px;
+    display: inline-block;
+}
+.badge-bhk {
+    background-color: #003366;
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 5px;
+}
+.badge-sqft {
+    background-color: #666666;
+    color: #FFFFFF;
+    font-size: 10px;
+    padding: 2px 5px;
+}
+.tag-amenity {
+    background-color: #EAEAEA;
+    border: 1px solid #CCCCCC;
+    font-size: 10px;
+    padding: 1px 5px;
+    margin-right: 3px;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+
+/* ===== DIGITAL DEED CERTIFICATE (Government Format) ===== */
+.deed-certificate {
+    background-color: #FFFDF8;
+    border: 3px double #800000;
+    outline: 1px solid #003366;
+    padding: 25px 30px;
+    font-family: "Times New Roman", Times, serif;
+    color: #000000;
+    box-shadow: inset 0 0 10px rgba(128,0,0,0.05);
+    position: relative;
+}
+
+.deed-header {
+    text-align: center;
+    border-bottom: 2px solid #800000;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.deed-header h2 {
+    color: #800000;
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.deed-header h4 {
+    color: #003366;
+    margin: 0;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.deed-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 70px;
+    color: rgba(128, 0, 0, 0.05);
+    font-weight: bold;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.deed-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+.deed-table th, .deed-table td {
+    border: 1px solid #800000;
+    padding: 6px 10px;
+    font-size: 13px;
+}
+.deed-table th {
+    background-color: #F4EBE1;
+    color: #800000;
+}
+
+.deed-stamp-box {
+    border: 2px solid #800000;
+    background-color: #FFFEEA;
+    padding: 10px 15px;
+    margin: 15px 0;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deed-signatures {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    padding-top: 15px;
+}
+.deed-sig-box {
+    width: 30%;
+    border-top: 1px dashed #000;
+    padding-top: 5px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    body * { visibility: hidden; }
+    #modal-overlay, #modal-deed, #deedDocument, #deedDocument * {
+        visibility: visible;
+    }
+    #modal-deed {
+        position: absolute;
+        left: 0; top: 0;
+        width: 100%;
+        border: none;
+        box-shadow: none;
+    }
+    .no-print { display: none !important; }
+}
+
+/* ===== Page alerts ===== */
+.page-alert {
+    max-width: 1200px;
+    margin: 0 auto 10px auto;
+    width: 95%;
+}
+
+/* ===== Footer ===== */
+.footer {
+    text-align: center;
+    font-size: 10px;
+    color: #666666;
+    border-top: 1px solid #CCCCCC;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+/* ===== Utility ===== */
+.hidden { display: none !important; }
+
+.alert {
+    border: 1px solid #FF0000;
+    background-color: #FFCCCC;
+    color: #990000;
+    padding: 6px 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.success {
+    border: 1px solid #006600;
+    background-color: #CCFFCC;
+    color: #006600;
+}

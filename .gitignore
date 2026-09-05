@@ -1,0 +1,23 @@
+# Python / Virtual Environment
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.python-version
+
+# Environment & Credentials
+.env
+
+# Uploaded Media (keep folder structure)
+server/uploads/*
+!server/uploads/.gitkeep
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip

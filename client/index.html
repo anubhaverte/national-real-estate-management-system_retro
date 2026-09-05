@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Real Estate Management Portal</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+
+    <!-- ===== MODAL OVERLAY (login / register / edit / checkout / deed / property details) ===== -->
+    <div id="modal-overlay" class="modal-overlay hidden" onclick="closeModal()">
+
+        <!-- Login Modal -->
+        <div id="modal-login" class="modal hidden" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span>&#128274; User Login</span>
+                <button class="modal-close" onclick="closeModal()">&#10006;</button>
+            </div>
+            <div class="modal-body">
+                <div id="loginAlert" class="alert hidden"></div>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address:</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="your@email.com" required style="width:220px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="••••••••" required style="width:220px;">
+                    </div>
+                    <div class="modal-demo-accounts">
+                        <strong>Demo accounts:</strong><br>
+                        admin@gov.in / admin123<br>
+                        seller@example.com / seller123<br>
+                        buyer@example.com / buyer123
+                    </div>
+                    <div class="modal-footer-btns">
+                        <input type="submit" value="Login">
+                        <input type="reset" value="Clear">
+                        <span style="margin-left:15px; font-size:11px;">No account? <a href="#" onclick="openModal('register'); return false;">Register here</a></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div id="modal-register" class="modal hidden" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span>&#128221; New User Registration</span>
+                <button class="modal-close" onclick="closeModal()">&#10006;</button>
+            </div>
+            <div class="modal-body">
+                <div id="registerAlert" class="alert hidden"></div>
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="regName">Full Name:</label>
+                        <input type="text" id="regName" placeholder="e.g. Rajesh Kumar" required style="width:220px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email Address:</label>
+                        <input type="email" id="regEmail" placeholder="your@email.com" required style="width:220px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password:</label>
+                        <input type="password" id="regPassword" placeholder="Min 6 characters" required style="width:220px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="regRole">Account Type:</label>
+                        <select id="regRole" onchange="toggleAgentFields()" style="width:226px;">
+                            <option value="BUYER">Buyer (Looking to purchase/rent)</option>
+                            <option value="SELLER">Seller / Real Estate Agent</option>
+                        </select>
+                    </div>
+                    <div id="agentFields" class="hidden">
+                        <div class="form-group">
+                            <label for="regAgency">Agency Name:</label>
+                            <input type="text" id="regAgency" placeholder="e.g. Kumar Properties" style="width:220px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="regContact">Contact Info:</label>
+                            <input type="text" id="regContact" placeholder="Phone or address" style="width:220px;">
+                        </div>
+                    </div>
+                    <div class="modal-footer-btns">
+                        <input type="submit" value="Create Account">
+                        <input type="reset" value="Reset">
+                        <span style="margin-left:15px; font-size:11px;">Have account? <a href="#" onclick="openModal('login'); return false;">Login here</a></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Property Modal -->
+        <div id="modal-editProperty" class="modal hidden" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span>&#9998; Edit Property Listing</span>
+                <button class="modal-close" onclick="closeModal()">&#10006;</button>
+            </div>
+            <div class="modal-body">
+                <div id="editAlert" class="alert hidden"></div>
+                <input type="hidden" id="editPropId">
+                <form id="editPropertyForm" onsubmit="submitEditProperty(event)">
+                    <div class="form-group">
+                        <label for="editPrice">New Price (&#8377;):</label>
+                        <input type="number" id="editPrice" placeholder="Leave blank to keep" style="width:220px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatus">Status:</label>
+                        <select id="editStatus" style="width:226px;">
+                            <option value="">-- No change --</option>
+                            <option value="AVAILABLE">Available</option>
+                            <option value="RENTED">Rented</option>
+                            <option value="SOLD">Sold</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer-btns">
+                        <input type="submit" value="Save Changes">
+                        <button type="button" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Property Inspection / Details Modal -->
+        <div id="modal-propertyDetail" class="modal modal-large hidden" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span id="detailPropTitle">&#127960; Property Details</span>
+                <button class="modal-close" onclick="closeModal()">&#10006;</button>
+            </div>
+            <div class="modal-body">
+                <div id="detailContent">Loading details...</div>
+            </div>
+        </div>
+
+        <!-- Transaction Checkout & Tax Breakdown Modal -->
+        <div id="modal-checkout" class="modal modal-medium hidden" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span>&#128179; Property Transaction &amp; E-Stamping Checkout</span>
+                <button class="modal-close" onclick="closeModal()">&#10006;</button>
+            </div>
+            <div class="modal-body">
+                <div id="checkoutAlert" class="alert hidden"></div>
+                <input type="hidden" id="checkoutPropId">
+                <div id="checkoutSummary">Loading breakdown...</div>
+                <hr style="margin:12px 0; border-color:#003366;">
+                <div class="form-group">
+                    <label style="width:160px; font-weight:bold;">Select Payment Gateway:</label>
+                    <select id="checkoutPaymentMethod" style="width:220px;">
+                        <option value="State Bank of India (NetBanking)">State Bank of India (NetBanking)</option>
+                        <option value="HDFC / ICICI e-Payment">HDFC / ICICI e-Payment</option>
+                        <option value="UPI / BharatPe E-Stamping">UPI / BharatPe E-Stamping</option>
+                        <option value="Treasury Challan / Demand Draft">Treasury Challan / Demand Draft</option>
+                    </select>
+                </div>
+                <div class="modal-footer-btns" style="text-align:right;">
+                    <button onclick="executeTransaction()" class="cta-btn" style="background-color:#006600; border-color:#004400;">Confirm &amp; Execute Title Deed</button>
+                    &nbsp;
+                    <button onclick="closeModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Official E-Deed & Payment Receipt Modal -->
+        <div id="modal-deed" class="modal modal-large hidden" onclick="event.stopPropagation()">
+            <div class="modal-header no-print">
+                <span>&#128220; Official Digital Title Deed &amp; Certificate of Stamp Duty</span>
+                <div>
+                    <button onclick="window.print()" class="header-btn" style="background-color:#FFFFCC;">&#128438; Print Deed</button>
+                    <button class="modal-close" onclick="closeModal()">&#10006;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="deedDocument" class="deed-certificate">
+                    <!-- Dynamic deed content rendered via JS -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <div class="banner">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="80%">
+                    <h1>&#127968; National Real Estate Management Portal</h1>
+                    <span class="tagline">A Government of India E-Governance Initiative</span>
+                </td>
+                <td width="20%" align="right" style="vertical-align:middle;">
+                    <span id="headerAuthBtns">
+                        <button onclick="openModal('login')" class="header-btn">Login</button>
+                        &nbsp;
+                        <button onclick="openModal('register')" class="header-btn">Register</button>
+                    </span>
+                    <span id="headerUserInfo" class="hidden" style="color:#CCFFCC; font-size:11px;"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- NAV BAR -->
+    <div class="menu-bar">
+        <a href="#" onclick="showHome()" id="navHome">Home</a>
+        <a href="#" onclick="navigate('buyerDashboard')" id="navBuyer" class="hidden">Buyer Dashboard</a>
+        <a href="#" onclick="navigate('sellerDashboard')" id="navSeller" class="hidden">Seller Dashboard</a>
+        <a href="#" onclick="navigate('adminDashboard')" id="navAdmin" class="hidden">Admin Dashboard</a>
+        <a href="#" onclick="logout()" id="navLogout" class="hidden" style="float:right; color:#990000;">&#128682; Logout</a>
+    </div>
+
+    <div class="marquee-container">
+        <marquee behavior="scroll" direction="left">NOTICE: Property Registration rates have been revised effective immediately. Please contact your nearest registrar office for details. Buyers are advised to verify all documents before transaction.</marquee>
+    </div>
+
+    <!-- ===== HERO WRAPPER — skyline is always in the background ===== -->
+    <div id="hero-wrapper" class="hero-wrapper">
+
+        <!-- Skyline background (always visible) -->
+        <div class="hero-skyline">
+            <img src="/skyline.jpg" alt="City Skyline" class="skyline-img">
+        </div>
+
+        <!-- Scrollable foreground -->
+        <div class="hero-scroll">
+
+            <!-- Page-level alerts -->
+            <div id="alertBox" class="alert page-alert hidden"></div>
+            <div id="successBox" class="alert success page-alert hidden"></div>
+
+            <!-- ── HOME PANEL: shown before login ── -->
+            <div id="panel-home" class="panel-home-center">
+                <div class="hero-card">
+                    <div class="hero-card-title">&#127968; National Real Estate Management Portal</div>
+                    <div class="hero-card-sub">A Government of India E-Governance Initiative</div>
+                    <hr style="border-color:#003366; margin:10px 0;">
+                    <p style="margin:8px 0 14px;">Find, list, and transact verified properties across India. Please login or create an account to access your dashboard.</p>
+                    <div style="text-align:center;">
+                        <button onclick="openModal('login')" class="cta-btn" style="width:190px;">&#128274; Login to Portal</button>
+                        <br><br>
+                        <button onclick="openModal('register')" class="cta-btn" style="width:190px; background-color:#800000; border-color:#AA3333;">&#128221; Create New Account</button>
+                    </div>
+                    <div class="hero-notice">&#128276; New property listings now available in the metropolitan region!</div>
+                </div>
+            </div>
+
+            <!-- ── DASHBOARD PANEL: shown after login ── -->
+            <div id="panel-dashboard" class="panel-dashboard hidden">
+
+                <!-- User info bar -->
+                <div id="user-info-bar" class="user-info-bar">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                            <td>
+                                &#128100;&nbsp;
+                                <span id="uib-name" style="font-weight:bold; font-size:13px;"></span>
+                                &nbsp;&bull;&nbsp;
+                                <span id="uib-email" style="color:#444;"></span>
+                                &nbsp;&bull;&nbsp;
+                                <span id="uib-role" class="uib-role-badge"></span>
+                            </td>
+                            <td align="right" style="font-size:10px; color:#555;">
+                                Session started: <span id="uib-time"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Buyer Dashboard -->
+                <div id="view-buyerDashboard" class="dash-view hidden">
+                    <h2>&#128269; Buyer Dashboard &amp; Property Finder</h2>
+                    <fieldset>
+                        <legend>Property Search Parameters</legend>
+                        <form id="searchForm" onsubmit="handleSearch(event)">
+                            <table width="100%" cellpadding="3">
+                                <tr>
+                                    <td><label>City:</label> <input type="text" id="searchCity" size="12" placeholder="e.g. Delhi"></td>
+                                    <td><label>Type:</label>
+                                        <select id="searchType">
+                                            <option value="">Any</option>
+                                            <option value="BUY">Buy</option>
+                                            <option value="RENT">Rent</option>
+                                        </select>
+                                    </td>
+                                    <td><label>BHK:</label>
+                                        <select id="searchBhk">
+                                            <option value="">Any</option>
+                                            <option value="1">1 BHK</option>
+                                            <option value="2">2 BHK</option>
+                                            <option value="3">3 BHK</option>
+                                            <option value="4">4+ BHK</option>
+                                        </select>
+                                    </td>
+                                    <td><label>Min SqFt:</label> <input type="number" id="searchMinSqft" size="8" placeholder="e.g. 800"></td>
+                                    <td><label>Max &#8377;:</label> <input type="number" id="searchMaxPrice" size="10" placeholder="Any"></td>
+                                    <td><input type="submit" value="Filter Properties"></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </fieldset>
+                    <h3>Search Results</h3>
+                    <div id="buyerSearchResults">Loading...</div>
+                    <h3>My Transaction History &amp; Deeds</h3>
+                    <div id="buyerTransactions">Loading...</div>
+                </div>
+
+                <!-- Seller Dashboard -->
+                <div id="view-sellerDashboard" class="dash-view hidden">
+                    <h2>&#128188; Seller Dashboard</h2>
+                    <fieldset>
+                        <legend>Add New Property Listing</legend>
+                        <form id="create-property-form" enctype="multipart/form-data">
+                            <table class="form-table">
+                                <tr>
+                                    <td><label for="prop-city">City Name:</label></td>
+                                    <td><input type="text" id="prop-city" required placeholder="e.g. Mumbai"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-address">Full Address:</label></td>
+                                    <td><input type="text" id="prop-address" required placeholder="e.g. 12-B Nehru Road, Andheri"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-type">Listing Type:</label></td>
+                                    <td>
+                                        <select id="prop-type">
+                                            <option value="RENT">For Rent</option>
+                                            <option value="BUY">For Sale</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-bhk">Bedrooms (BHK):</label></td>
+                                    <td>
+                                        <select id="prop-bhk">
+                                            <option value="1">1 BHK</option>
+                                            <option value="2" selected>2 BHK</option>
+                                            <option value="3">3 BHK</option>
+                                            <option value="4">4 BHK</option>
+                                            <option value="5">5+ BHK</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-sqft">Built-up Area (Sq. Ft.):</label></td>
+                                    <td><input type="number" id="prop-sqft" required value="1200" placeholder="e.g. 1200"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-price">Price (&#8377;):</label></td>
+                                    <td><input type="number" id="prop-price" required placeholder="e.g. 5000000"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-amenities">Amenities:</label></td>
+                                    <td>
+                                        <input type="checkbox" class="amenity-chk" value="Parking" checked> Parking &nbsp;
+                                        <input type="checkbox" class="amenity-chk" value="Lift" checked> Elevator &nbsp;
+                                        <input type="checkbox" class="amenity-chk" value="Power Backup" checked> Power Backup &nbsp;
+                                        <input type="checkbox" class="amenity-chk" value="Security" checked> 24x7 Security &nbsp;
+                                        <input type="checkbox" class="amenity-chk" value="Garden"> Garden
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-remarks">Remarks:</label></td>
+                                    <td><textarea id="prop-remarks" rows="2" placeholder="Describe the property (optional)..."></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-photo">Property Photo:</label></td>
+                                    <td><input type="file" id="prop-photo" accept="image/*"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prop-video">Property Video:</label></td>
+                                    <td><input type="file" id="prop-video" accept="video/*"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:center;">
+                                        <button type="submit" class="btn">Submit Listing</button>
+                                        &nbsp;
+                                        <button type="reset">Clear Form</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </fieldset>
+                    <h3>My Active Listings</h3>
+                    <div id="sellerProperties">Loading...</div>
+                    <h3>Transactions &amp; Generated Deeds</h3>
+                    <div id="sellerTransactions">Loading...</div>
+                </div>
+
+                <!-- Admin Dashboard -->
+                <div id="view-adminDashboard" class="dash-view hidden">
+                    <h2>&#128187; Administrator Console</h2>
+                    <fieldset>
+                        <legend>Platform Statistics</legend>
+                        <div id="adminStats">Loading stats...</div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Data Export</legend>
+                        <button onclick="downloadCSV()">Export All Transactions (CSV)</button>
+                    </fieldset>
+                    <h3>All Users</h3>
+                    <div id="adminUsers">Loading...</div>
+                    <h3>All Transactions &amp; Title Deeds</h3>
+                    <div id="adminAllTransactions">Loading...</div>
+                </div>
+
+            </div><!-- /panel-dashboard -->
+
+        </div><!-- /hero-scroll -->
+    </div><!-- /hero-wrapper -->
+
+    <div class="footer">
+        <a href="#">Sitemap</a> | <a href="#">RTI</a> | <a href="#">Accessibility Statement</a> | <a href="#">Terms &amp; Conditions</a><br>
+        Best viewed in 1024x768 resolution. Designed for Internet Explorer 6+.<br>
+        Last Updated: <script>document.write(new Date().toLocaleDateString())</script><br>
+        Visitor Count: 00452391
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
