@@ -23,16 +23,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# API Routes
+@app.get("/api/health")
+def health_check():
+    return {"status": "ok"}
+
 # Include routers
 app.include_router(auth.router)
 app.include_router(properties.router)
 app.include_router(transactions.router)
 app.include_router(admin.router)
-
-# Mount static files for the frontend if the directory exists
-client_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "client")
-if os.path.exists(client_dir):
-    app.mount("/", StaticFiles(directory=client_dir, html=True), name="static")
 
 # Mount uploads directory for media
 uploads_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
@@ -40,6 +40,7 @@ if not os.path.exists(uploads_dir):
     os.makedirs(uploads_dir)
 app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
 
-@app.get("/api/health")
-def health_check():
-    return {"status": "ok"}
+# Mount static files for the frontend at the root (must be after all API routes)
+client_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "client")
+if os.path.exists(client_dir):
+    app.mount("/", StaticFiles(directory=client_dir, html=True), name="static")
